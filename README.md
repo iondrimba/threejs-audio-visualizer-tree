@@ -1,4 +1,4 @@
-# Dancing Three - ThreeJs Audio Visualizer #3
+# Dancing Tree - ThreeJs Audio Visualizer #3
 
 Live Demo http://iondrimba.github.io/threejs-audio-visualizer-tree/public
 

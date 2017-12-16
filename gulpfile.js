@@ -89,10 +89,10 @@ gulp.task('bump-major', gulpsync.sync(['major']), function renameMajor() {
 
 
 // Default Task
-gulp.task('default', gulpsync.sync(['copy', 'sass', 'eslint', 'browserify', 'browser-sync', 'watch']));
+gulp.task('default', gulpsync.sync(['copy', 'sass', 'browserify', 'browser-sync', 'watch']));
 
 //publish Task
-gulp.task('deploy', gulpsync.sync(['copy', 'sass', 'eslint', 'browserify']));
+gulp.task('deploy', gulpsync.sync(['copy', 'sass', 'browserify']));
 
 //optimization task isolated because of the asynchronous problems gulp has
 gulp.task('optimize', gulpsync.sync(['uglify', 'minify-css']));

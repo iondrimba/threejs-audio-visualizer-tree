@@ -64,8 +64,9 @@ a {
 .credits {
   margin-left: 20px;
   margin-top: 20px;
-  position: relative;
+  position: absolute;
   z-index: 1;
+  width: 100%;
 }
 
 .removeLoader {

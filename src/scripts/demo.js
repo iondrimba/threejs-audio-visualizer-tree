@@ -1,5 +1,7 @@
 import Loader from './loader';
 import OrbitControls from 'threejs-controls/OrbitControls';
+import OBJLoader from './OBJLoader';
+import MTLLoader from 'three-mtl-loader';
 import { TweenMax, Power2 } from 'gsap';
 
 class App {
@@ -20,6 +22,7 @@ class App {
     this.playing = false;
 
     this.objects = [];
+
   }
 
   progress(percent) {
@@ -40,6 +43,8 @@ class App {
       this.secondRing = new THREE.Object3D();
       this.thirdRing = new THREE.Object3D();
       this.fourthRing = new THREE.Object3D();
+
+      this.loadModels('models/model.json');
 
       this.setupAudio();
       this.addSoundControls();
@@ -117,6 +122,35 @@ class App {
     this.rings.push(group);
     this.scene.add(group);
   }
+
+  loadModels(url) {
+    var mtlLoader = new MTLLoader();
+    mtlLoader.setPath('models/');
+    mtlLoader.load('materials.mtl', (materials) => {
+      materials.preload();
+      var objLoader = new THREE.OBJLoader();
+      console.log(objLoader);
+      objLoader.setMaterials(materials);
+      objLoader.setPath('models/');
+      objLoader.load('model.obj', (object) => {
+        object.position.set(10, 0, 10);
+        object.scale.set(20, 20, 20);
+        object.castShadow = true;
+        this.scene.add(object);
+      }, onProgress, onError);
+    });
+
+    var onProgress = (xhr) => {
+      if (xhr.lengthComputable) {
+        var percentComplete = xhr.loaded / xhr.total * 100;
+        console.log(Math.round(percentComplete, 2) + '% downloaded');
+      }
+    };
+    var onError = (xhr) => {
+    };
+  }
+
+
 
   createScene() {
     this.scene = new THREE.Scene();
@@ -205,9 +239,9 @@ class App {
   }
 
   addSpotLight() {
-    const spotLight = new THREE.SpotLight(0x2b9454);
+    const spotLight = new THREE.SpotLight(0xffffff);
 
-    spotLight.position.set(0, 40, 0);
+    spotLight.position.set(4, 30, 5);
     spotLight.castShadow = true;
 
     this.scene.add(spotLight);
@@ -280,6 +314,8 @@ class App {
     this.moveRingGroup(this.rings[3], -.02);
     this.moveRingGroup(this.rings[4], .01);
     this.moveRingGroup(this.rings[5], -.01);
+    this.moveRingGroup(this.rings[6], .02);
+    this.moveRingGroup(this.rings[7], -.02);
   }
 
   setupAudio() {
@@ -294,7 +330,7 @@ class App {
     this.bufferLength = this.analyser.frequencyBinCount;
 
     this.frequencyData = new Uint8Array(this.bufferLength);
-    this.audioElement.volume = 1;
+    this.audioElement.volume = .1;
 
     this.audioElement.addEventListener('playing', () => {
       this.playing = true;

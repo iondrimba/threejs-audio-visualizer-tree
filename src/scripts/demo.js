@@ -1,5 +1,7 @@
 import Loader from './loader';
 import OrbitControls from 'threejs-controls/OrbitControls';
+import TransformControls from 'threejs-controls/TransformControls';
+
 import OBJLoader from './OBJLoader';
 import MTLLoader from 'three-mtl-loader';
 import { TweenMax, Power2 } from 'gsap';
@@ -20,7 +22,7 @@ class App {
     this.count = 0;
     this.percent = 0;
     this.playing = false;
-
+    this.bgColor = 0x6f11f1;
     this.objects = [];
 
   }
@@ -39,12 +41,8 @@ class App {
 
   complete(file) {
     setTimeout(() => {
-      this.firstRing = new THREE.Object3D();
-      this.secondRing = new THREE.Object3D();
-      this.thirdRing = new THREE.Object3D();
-      this.fourthRing = new THREE.Object3D();
-
-      this.loadModels('models/model.json');
+      this.star = new THREE.Object3D();
+      this.house = new THREE.Object3D();
 
       this.setupAudio();
       this.addSoundControls();
@@ -58,18 +56,50 @@ class App {
 
       this.rings = [];
 
-      this.createRingOfSquares(20, 4, 0x2b9454, this.rings, -4);
-      this.createRingOfSquares(18, 3.5, 0x2b9454, this.rings, -2);
-      this.createRingOfSquares(16, 3, 0x2b9454, this.rings, 0);
-      this.createRingOfSquares(14, 2.5, 0x2b9454, this.rings, 2);
-      this.createRingOfSquares(10, 2, 0x2b9454, this.rings, 4);
-      this.createRingOfSquares(6, 1.5, 0x2b9454, this.rings, 6);
-      this.createRingOfSquares(4, 1.2, 0x2b9454, this.rings, 8);
-      this.createRingOfSquares(3, .8, 0x2b9454, this.rings, 10);
-      this.createRingOfSquares(2, .4, 0x2b9454, this.rings, 12);
-      this.createRingOfSquares(1, 0, 0x2b9454, this.rings, 14);
+      this.color = 0x1fc30e;
+
+      this.createRingOfSquares(20, 4, this.color, this.rings, -4);
+      this.createRingOfSquares(18, 3.5, this.color, this.rings, -2);
+      this.createRingOfSquares(16, 3, this.color, this.rings, 0);
+      this.createRingOfSquares(14, 2.5, this.color, this.rings, 2);
+      this.createRingOfSquares(10, 2, this.color, this.rings, 4);
+      this.createRingOfSquares(6, 1.5, this.color, this.rings, 6);
+      this.createRingOfSquares(4, 1.2, this.color, this.rings, 8);
+      this.createRingOfSquares(3, .8, this.color, this.rings, 10);
+      this.createRingOfSquares(2, .4, this.color, this.rings, 12);
+      this.createRingOfSquares(1, 0, this.color, this.rings, 14);
 
       this.animate();
+
+      this.loadModels('house', (house) => {
+        const scale = 7;
+        this.house = house;
+        house.scale.set(scale, scale, scale);
+        house.position.set(15, -1, 5);
+        this.scene.add(this.house);
+      });
+      this.loadModels('gift-group', (gifts) => {
+        const scale = 3;
+        gifts.scale.set(scale, scale, scale);
+        gifts.position.set(-15, -3, 5);
+        gifts.rotateY(180);
+        this.scene.add(gifts);
+      });
+      this.loadModels('single-gift', (gift) => {
+        const scale = 20;
+        gift.scale.set(scale, scale, scale);
+        gift.position.set(8, -3, 11);
+        gift.rotateY(-45);
+        this.scene.add(gift);
+      });
+      this.loadModels('star', (star) => {
+
+        const scale = 1;
+        this.star = star;
+        star.scale.set(scale, scale, scale);
+        star.position.set(0, 18, 0);
+        this.scene.add(this.star);
+      });
 
       this.playSound(file);
     }, 200);
@@ -98,14 +128,13 @@ class App {
     const group = new THREE.Object3D()
 
     for (let index = 0; index < count; index++) {
+      const l = 360 / count;
+      const pos = this.radians(l * index);
+      const obj = this.createObj(color);
+      const distance = (radius * 2);
 
-      var l = 360 / count;
-      var pos = this.radians(l * index);
-      var obj = this.createObj(color);
-      var distance = (radius * 2);
-
-      var sin = Math.sin(pos) * distance;
-      var cos = Math.cos(pos) * distance;
+      const sin = Math.sin(pos) * distance;
+      const cos = Math.cos(pos) * distance;
 
       obj.position.set(sin, posY, cos);
       obj.originalPosition = {
@@ -123,38 +152,37 @@ class App {
     this.scene.add(group);
   }
 
-  loadModels(url) {
-    var mtlLoader = new MTLLoader();
-    mtlLoader.setPath('models/');
-    mtlLoader.load('materials.mtl', (materials) => {
+  loadModels(name, callback) {
+    const mtlLoader = new MTLLoader();
+    const folder = 'models/';
+
+    mtlLoader.setPath(folder);
+    mtlLoader.load(`${name}.mtl`, (materials) => {
       materials.preload();
-      var objLoader = new THREE.OBJLoader();
-      console.log(objLoader);
+
+      const objLoader = new THREE.OBJLoader();
       objLoader.setMaterials(materials);
-      objLoader.setPath('models/');
-      objLoader.load('model.obj', (object) => {
-        object.position.set(10, 0, 10);
-        object.scale.set(20, 20, 20);
+      objLoader.setPath(folder);
+
+      objLoader.load(`${name}.obj`, (object) => {
         object.castShadow = true;
-        this.scene.add(object);
+
+        callback(object);
+
       }, onProgress, onError);
     });
 
-    var onProgress = (xhr) => {
+    const onProgress = (xhr) => {
       if (xhr.lengthComputable) {
-        var percentComplete = xhr.loaded / xhr.total * 100;
-        console.log(Math.round(percentComplete, 2) + '% downloaded');
+        const percentComplete = xhr.loaded / xhr.total * 100;
       }
     };
-    var onError = (xhr) => {
-    };
+    const onError = (xhr) => { };
   }
-
-
 
   createScene() {
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xffffff);
+    this.scene.background = new THREE.Color(this.bgColor);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -167,7 +195,7 @@ class App {
 
   createCamera() {
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight);
-    this.camera.position.set(15, -15, 10);
+    this.camera.position.set(-2, 11, 31);
 
     this.scene.add(this.camera);
 
@@ -184,12 +212,11 @@ class App {
     const divisions = 25;
 
     const gridHelper = new THREE.GridHelper(size, divisions);
-    gridHelper.position.set(0, 0, 0);
+    gridHelper.position.set(0, -5, 0);
     gridHelper.material.opacity = 0.50;
-    gridHelper.material.transparent = true;
+    gridHelper.material.transparent = false;
     this.scene.add(gridHelper);
   }
-
 
   createObj(color) {
     const radius = 1;
@@ -197,11 +224,11 @@ class App {
     const heightSegments = 20;
     const geometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
 
-    var material = new THREE.MeshPhongMaterial({
+    var material = new THREE.MeshStandardMaterial({
       color: color,
-      specular: color,
-      reflectivity: 1000,
-      shininess: 50
+      emissive: 0x0,
+      metalness:.3,
+      roughness:.1
     });
 
     const obj = new THREE.Mesh(geometry, material);
@@ -234,7 +261,7 @@ class App {
     this.scene.add(plane);
   }
 
-  moveRingGroup(group, value) {
+  rotateObject(group, value) {
     group.rotation.y += value;
   }
 
@@ -250,7 +277,7 @@ class App {
   }
 
   addAmbientLight() {
-    const light = new THREE.AmbientLight(0x2b9454);
+    const light = new THREE.AmbientLight(0xffffff);
     this.scene.add(light);
   }
 
@@ -273,20 +300,24 @@ class App {
 
       this.analyser.getByteFrequencyData(this.frequencyData);
 
-      for (var i = 0; i < this.rings.length; i++) {
-        var p = this.frequencyData[i];
-        var s = this.rings[i];
-        var delta = p / 60;
+      for (let i = 0; i < this.rings.length; i++) {
+        const p = this.frequencyData[i];
+        const s = this.rings[i];
+        const delta = p / 60;
 
         TweenMax.to(s.position, .1, {
           y: delta
         });
+
+        TweenMax.to(this.star.position, .1, {
+          y: delta + 16
+        });
       }
 
-      for (var j = 0; j < this.objects.length; j++) {
-        var p1 = this.frequencyData[j];
-        var s1 = this.objects[j];
-        var delta1 = p1 / 100;
+      for (let j = 0; j < this.objects.length; j++) {
+        const p1 = this.frequencyData[j];
+        const s1 = this.objects[j];
+        let delta1 = p1 / 100;
 
         if (delta1 <= 0) {
           delta1 = 1;
@@ -308,14 +339,15 @@ class App {
       }
     }
 
-    this.moveRingGroup(this.rings[0], .01);
-    this.moveRingGroup(this.rings[1], -.01);
-    this.moveRingGroup(this.rings[2], .02);
-    this.moveRingGroup(this.rings[3], -.02);
-    this.moveRingGroup(this.rings[4], .01);
-    this.moveRingGroup(this.rings[5], -.01);
-    this.moveRingGroup(this.rings[6], .02);
-    this.moveRingGroup(this.rings[7], -.02);
+    this.rotateObject(this.rings[0], .01);
+    this.rotateObject(this.rings[1], -.01);
+    this.rotateObject(this.rings[2], .02);
+    this.rotateObject(this.rings[3], -.02);
+    this.rotateObject(this.rings[4], .01);
+    this.rotateObject(this.rings[5], -.01);
+    this.rotateObject(this.rings[6], .02);
+    this.rotateObject(this.rings[7], -.02);
+    this.rotateObject(this.star, -.04);
   }
 
   setupAudio() {
@@ -330,7 +362,7 @@ class App {
     this.bufferLength = this.analyser.frequencyBinCount;
 
     this.frequencyData = new Uint8Array(this.bufferLength);
-    this.audioElement.volume = .1;
+    this.audioElement.volume = 1;
 
     this.audioElement.addEventListener('playing', () => {
       this.playing = true;
@@ -340,11 +372,11 @@ class App {
     });
     this.audioElement.addEventListener('ended', () => {
       this.playing = false;
+      this.btnPause.click();
     });
   }
 
   playSound(file) {
-
     setTimeout(() => {
       this.audioElement.src = file;
       this.audioElement.load();

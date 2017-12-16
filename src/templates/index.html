@@ -5,60 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="theme-color" content="#f15f48">
-    <meta name="application-name" content="React Calculator">
+    <meta name="theme-color" content="#6f11f1">
+    <meta name="application-name" content="Dancing Three">
     <meta name="description" content="Threejs Audio Visualizer">
-    <meta name="keywords" content="Threejs, Javascript, Ion Drimba Filho">
+    <meta name="keywords" content="Threejs, Javascript, WebGl, WebAudio, Ion Drimba Filho">
     <meta name="subject" content="Threejs Audio Visualizer">
     <meta name="copyright" content="Ion Drimba Filho">
     <meta name="robots" content="index,follow">
     <meta name="topic" content="">
-    <meta name="summary" content="ThreeJs Audio Visualizer Two">
+    <meta name="summary" content="Dancing Three">
     <meta name="author" content="Ion Drimba Filho">
     <meta name="url" content="http://iondrimba.github.io/threejs-audio-visualizer/public/index.html">
-    <meta name="pagename" content="ThreeJs Audio Visualizer Two">
+    <meta name="pagename" content="Dancing Three">
     <meta name="category" content="">
     <meta name="coverage" content="Worldwide">
     <meta name="distribution" content="Global">
     <meta name="rating" content="General">
-    <meta name="subtitle" content="ThreeJs Audio Visualizer Two">
+    <meta name="subtitle" content="Dancing Three">
     <meta name="target" content="all">
     <meta http-equiv="cleartype" content="on">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="Threejs Audio Visualizer Two">
+    <meta name="twitter:site" content="Dancing Three">
     <meta name="twitter:creator" content="Ion Drimba Filho">
-    <meta name="twitter:title" content="Threejs Audio Visualizer Two">
-    <meta name="twitter:description" content="Audio Visualizer made with Threejs">
-    <meta name="twitter:image:src" content="https://raw.githubusercontent.com/iondrimba/images/master/demo2.PNG">
+    <meta name="twitter:title" content="Dancing Three">
+    <meta name="twitter:description" content="Dancing Three - Audio Visualizer made with Threejs">
+    <meta name="twitter:image:src" content="https://raw.githubusercontent.com/iondrimba/images/master/dancing.trhree.PNG">
     <meta property="og:url" content="http://iondrimba.github.io/threejs-audio-visualizer/public/index.html">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Threejs Audio Visualizer">
-    <meta property="og:image" content="https://raw.githubusercontent.com/iondrimba/images/master/demo2.PNG">
-    <meta property="og:description" content="Threejs Audio Visualizer Two">
-    <meta property="og:site_name" content="Threejs Audio Visualizer Two">
+    <meta property="og:title" content="Dancing Three - Threejs Audio Visualizer">
+    <meta property="og:image" content="https://raw.githubusercontent.com/iondrimba/images/master/dancing.trhree.PNG">
+    <meta property="og:description" content="Dancing Three - Threejs Audio Visualizer">
+    <meta property="og:site_name" content="Dancing Three">
     <meta property="article:author" content="https://iondrimbafilho.me/">
     <meta property="article:publisher" content="https://iondrimbafilho.me/">
-    <meta itemprop="name" content="Calculator">
-    <meta itemprop="description" content="Threejs Audio Visualizer">
-    <meta itemprop="image" content="https://raw.githubusercontent.com/iondrimba/images/master/demo2.PNG">
+    <meta itemprop="name" content="Dancing Three">
+    <meta itemprop="description" content="Dancing Three - Threejs Audio Visualizer">
+    <meta itemprop="image" content="https://raw.githubusercontent.com/iondrimba/images/master/dancing.trhree.PNG">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>Threejs Audio Visualizer Two</title>
+    <title>Dancing Three</title>
     <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
     <link rel="stylesheet" href="css/demo.css">
 </head>
 
 <body>
     <div class="credits">
-        <h1>
-            <a href="https://comtruise.bandcamp.com/album/in-decay" target="_blank" rel="noopener noreferrer">Com Truise </a>/
-            <a href="https://comtruise.bandcamp.com/track/84-dreamin" target="_blank" rel="noopener noreferrer">84' Dreamin</a>
-        </h1>
+        <h1>Dancing Three</h1>
         <div class="controls">
             <button class="play">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="32" height="32" viewBox="0 0 25 32"
                     data-tags="play,media control">
-                    <g fill="#ccc" transform="scale(0.03125 0.03125)">
+                    <g fill="#fff" transform="scale(0.03125 0.03125)">
                         <path d="M192 0v1024l640-511.264-640-512.736z" />
                     </g>
                 </svg>
@@ -66,7 +63,7 @@
             <button class="pause control-show">
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"
                     data-tags="pause,media control">
-                    <g fill="#ccc" transform="scale(0.03125 0.03125)">
+                    <g fill="#fff" transform="scale(0.03125 0.03125)">
                         <path d="M352 0h-192c-17.696 0-32 14.336-32 32v960c0 17.696 14.304 32 32 32h192c17.696 0 32-14.304 32-32v-960c0-17.664-14.304-32-32-32zM864 0h-192c-17.696 0-32 14.336-32 32v960c0 17.696 14.304 32 32 32h192c17.696 0 32-14.304 32-32v-960c0-17.664-14.304-32-32-32z"
                         />
                     </g>
@@ -78,6 +75,13 @@
     <audio id="audio" crossOrigin="anonymous"></audio>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script>
     <script src="js/demo.js"></script>
+    <footer>
+        <h2>credits (models):</h2>
+        <a href="https://poly.google.com/view/9NXf-SDxJny" target="_blank" rel="noopener noreferrer">Star</a> /
+        <a href="https://poly.google.com/view/8eJfmMDsvso" target="_blank" rel="noopener noreferrer">Squared Christmas Gifts</a> /
+        <a href="https://poly.google.com/view/8b5ywSuzte0" target="_blank" rel="noopener noreferrer">Xmas Gift</a> /
+        <a href="https://poly.google.com/view/9JI_vKK0NfB" target="_blank" rel="noopener noreferrer">Cabin</a>
+    </footer>
 </body>
 
 </html>

@@ -24,6 +24,7 @@ class App {
     this.playing = false;
     this.bgColor = 0x6f11f1;
     this.objects = [];
+    this.angle = 0;
 
   }
 
@@ -195,7 +196,7 @@ class App {
 
   createCamera() {
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight);
-    this.camera.position.set(-2, 11, 31);
+    this.camera.position.set(-5, 19, 32);
 
     this.scene.add(this.camera);
 
@@ -227,8 +228,8 @@ class App {
     var material = new THREE.MeshStandardMaterial({
       color: color,
       emissive: 0x0,
-      metalness:.3,
-      roughness:.1
+      metalness: .3,
+      roughness: .1
     });
 
     const obj = new THREE.Mesh(geometry, material);
@@ -268,7 +269,7 @@ class App {
   addSpotLight() {
     const spotLight = new THREE.SpotLight(0xffffff);
 
-    spotLight.position.set(4, 30, 5);
+    spotLight.position.set(4, 30, 1);
     spotLight.castShadow = true;
 
     this.scene.add(spotLight);
@@ -283,6 +284,16 @@ class App {
 
   animate() {
     this.controls.update();
+
+    var timer = new Date().getTime() * 0.0005;
+
+    //this.camera.lookAt( this.scene.position );
+    //this.camera.up = new THREE.Vector3(1,0,1);
+
+    this.angle += .2;
+
+    this.camera.position.x = Math.cos(this.radians(this.angle)) * 35;
+    this.camera.position.z = Math.sin(this.radians(this.angle)) * 35;
 
     this.drawWave();
 

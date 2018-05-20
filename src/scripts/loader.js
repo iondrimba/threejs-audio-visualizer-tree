@@ -4,7 +4,6 @@ class Loader {
   }
 
   load(file) {
-
     const request = new XMLHttpRequest();
 
     request.open('GET', file, true);
@@ -14,9 +13,7 @@ class Loader {
       this.callback(percent);
     };
 
-    request.onload = () => {
-      this.complete(file);
-    };
+    request.onload = () => this.complete(file);
 
     request.send();
   }
@@ -25,7 +22,7 @@ class Loader {
     this.callback = callback;
   }
 
-  complete() { }
+  complete() {}
 }
 
 export default Loader;

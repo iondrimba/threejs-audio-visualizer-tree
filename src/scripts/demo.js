@@ -14,6 +14,7 @@ class App {
       this.progress(percent);
     });
 
+    this.playIntro = document.querySelector('.play-intro');
     this.loaderBar = document.querySelector('.loader');
 
     this.loader.load('jingle_bells.mp3');
@@ -25,7 +26,6 @@ class App {
     this.bgColor = 0x6f11f1;
     this.objects = [];
     this.angle = 0;
-
   }
 
   progress(percent) {
@@ -33,6 +33,7 @@ class App {
     if (percent === 100) {
       setTimeout(() => {
         requestAnimationFrame(() => {
+          this.playIntro.classList.add('control-show');
           this.loaderBar.classList.add('removeLoader');
           this.loaderBar.style.transform = 'scale(1, 0)';
         })
@@ -79,6 +80,7 @@ class App {
         house.position.set(15, -1, 5);
         this.scene.add(this.house);
       });
+
       this.loadModels('gift-group', (gifts) => {
         const scale = 3;
         gifts.scale.set(scale, scale, scale);
@@ -86,6 +88,7 @@ class App {
         gifts.rotateY(180);
         this.scene.add(gifts);
       });
+
       this.loadModels('single-gift', (gift) => {
         const scale = 20;
         gift.scale.set(scale, scale, scale);
@@ -93,6 +96,7 @@ class App {
         gift.rotateY(-45);
         this.scene.add(gift);
       });
+
       this.loadModels('star', (star) => {
 
         const scale = 1;
@@ -181,6 +185,19 @@ class App {
     const onError = (xhr) => { };
   }
 
+  play() {
+    this.audioCtx.resume();
+    this.audioElement.play();
+    this.btnPlay.classList.remove('control-show');
+    this.btnPause.classList.add('control-show');
+  }
+
+  pause() {
+    this.audioElement.pause();
+    this.btnPause.classList.remove('control-show');
+    this.btnPlay.classList.add('control-show');
+  }
+
   createScene() {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(this.bgColor);
@@ -249,7 +266,6 @@ class App {
   }
 
   addFloor() {
-
     const planeGeometry = new THREE.PlaneGeometry(2000, 2000);
     const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.08 });
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
@@ -286,9 +302,6 @@ class App {
     this.controls.update();
 
     var timer = new Date().getTime() * 0.0005;
-
-    //this.camera.lookAt( this.scene.position );
-    //this.camera.up = new THREE.Vector3(1,0,1);
 
     this.angle += .2;
 
@@ -389,11 +402,12 @@ class App {
 
   playSound(file) {
     setTimeout(() => {
-      this.audioElement.src = file;
-      this.audioElement.load();
-      this.audioElement.play();
+      this.playIntro.addEventListener('click', (evt)=>{
+        evt.currentTarget.classList.remove('control-show');
+        this.play();
+      });
 
-      this.playing = true;
+      this.audioElement.src = file;
     }, 300);
   }
 }

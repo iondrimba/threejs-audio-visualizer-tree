@@ -1,12 +1,8 @@
 sudo: required
 language: node_js
 
-rvm:
-  - 2.0.0
-
 before_install:
 - gem install sass
-- rvm install ruby-2.0.0-p598
 - gem install scss_lint
 - npm install -g npm
 - npm install promise
@@ -16,3 +12,16 @@ script:
 - gulp deploy
 - npm test
 - gulp coveralls
+
+sudo: required
+language: node_js
+cache: npm
+node_js:
+- '8'
+before_install:
+- npm install -g npm
+before_script:
+- npm install -g gulp
+script:
+- gulp deploy
+- gulp optimize

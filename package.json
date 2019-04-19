@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "description": "Audio Visualizer with Threejs",
   "main": "gulpfile.js",
-  "keywords": [
-
-  ],
+  "keywords": [],
   "repository": {
     "type": "git",
     "url": ""

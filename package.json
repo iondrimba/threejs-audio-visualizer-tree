@@ -36,8 +36,5 @@
     "webpack-dev-server": "^3.9.0",
     "webpack-merge": "^4.2.2"
   },
-  "dependencies": {
-    "three": "^0.110.0",
-    "threejs-controls": "^1.0.6"
-  }
+  "dependencies": {}
 }

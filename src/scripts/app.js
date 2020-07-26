@@ -1,5 +1,17 @@
-import '../scss/demo.scss';
+import THREE from './three.r110.js';
+import TweenMax from './tweenmax.1.20.3';
+import OBJLoader from './three.r110.objloader';
+import OrbitControls from './three.r110.orbitcontrols';
+import MTLLoader from './three.r110.mtlloader';
 import Loader from './loader';
+import '../scss/demo.scss';
+
+THREE = window.THREE;
+THREE.MTLLoader = MTLLoader;
+THREE.OrbitControls = OrbitControls;
+THREE.OBJLoader  = OBJLoader;
+
+console.log(THREE, MTLLoader);
 
 export default class App {
   constructor() {

@@ -24,6 +24,15 @@ module.exports = {
         use: {
           loader: 'babel-loader'
         }
+      },
+      {
+        test: require.resolve('./src/scripts/three.r110.js'),
+        use: [{
+          loader: 'expose-loader',
+          options: {
+            exposes: 'THREE',
+          }
+        }]
       }
     ]
   },
